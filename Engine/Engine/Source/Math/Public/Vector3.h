@@ -21,10 +21,19 @@ public:
 	inline Vector3 operator*(const Vector3& other);
 	inline Vector3 operator/(const Vector3& other);
 	inline Vector3 operator/(float scalar);
+
 	/* cross product */
 	inline Vector3 operator^(const Vector3& other);
+
 	/* dot product */
 	inline float operator|(const Vector3& other);
+
+	/* Access components*/
+	inline float operator[](int32_t componentIndex) const;
+	inline float& operator[](int32_t componentIndex);
+
+	/* Set all of the vectors coordinates */
+	inline void Set(float newX, float newY, float newZ);
 
 	inline static float DotProduct(const Vector3& lhs, const Vector3& rhs);
 	inline static Vector3 CrossProduct(const Vector3& lhs, const Vector3& rhs);
@@ -98,6 +107,19 @@ Vector3 Vector3::operator^(const Vector3& other) {
 
 float Vector3::operator|(const Vector3& other) {
 	return DotProduct(*this, other);
+}
+
+float Vector3::operator[](int32_t componentIndex) const {
+	return (&x)[componentIndex];
+}
+float& Vector3::operator[](int32_t componentIndex) {
+	return (&x)[componentIndex];
+}
+
+void Vector3::Set(float newX, float newY, float newZ) {
+	x = newX;
+	y = newY;
+	z = newZ;
 }
 
 void Vector3::Normalize() {
