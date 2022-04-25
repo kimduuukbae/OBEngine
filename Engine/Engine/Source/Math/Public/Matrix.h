@@ -23,7 +23,7 @@ struct Matrix {
 	inline Matrix operator-(const Matrix& other) const;
 
 	inline bool operator==(const Matrix& other) const;
-	inline Matrix operator!=(const Matrix& other) const;
+	inline bool operator!=(const Matrix& other) const;
 
 	inline float& operator()(size_t row, size_t column);
 	inline float operator()(size_t row, size_t column) const;
@@ -32,6 +32,8 @@ struct Matrix {
 	inline float GetDeterminant() const;
 	inline void Transpose();
 	inline Matrix GetTranspose();
+
+	inline static Matrix GetTranspose(const Matrix& target);
 };
 
 
@@ -49,15 +51,36 @@ Matrix::Matrix(const Vector3& newX, const Vector3& newY, const Vector3& newZ) {
 }
 
 Matrix Matrix::operator*(const Matrix& other) const {
+	Matrix newMat{};
 
+	for (size_t x{ 0 }; x < 4; ++x) {
+		for (size_t y{ 0 }; y < 4; ++y) 
+			newMat(x,y) = m[x][y] * other.m[x][y];	
+	}
+
+	return newMat;
 }
 
 Matrix Matrix::operator+(const Matrix& other) const {
+	Matrix newMat{};
 
+	for (size_t x{ 0 }; x < 4; ++x) {
+		for (size_t y{ 0 }; y < 4; ++y)
+			newMat(x, y) = m[x][y] + other.m[x][y];
+	}
+
+	return newMat;
 }
 
 Matrix Matrix::operator-(const Matrix& other) const {
+	Matrix newMat{};
 
+	for (size_t x{ 0 }; x < 4; ++x) {
+		for (size_t y{ 0 }; y < 4; ++y)
+			newMat(x, y) = m[x][y] - other.m[x][y];
+	}
+
+	return newMat;
 }
 
 bool Matrix::operator==(const Matrix& other) const {
@@ -68,8 +91,8 @@ bool Matrix::operator==(const Matrix& other) const {
 	return true;
 }
 
-Matrix Matrix::operator!=(const Matrix& other) const {
-
+bool Matrix::operator!=(const Matrix& other) const {
+	return !(*this == other);
 }
 
 inline float& Matrix::operator()(size_t row, size_t column){
@@ -89,9 +112,24 @@ float Matrix::GetDeterminant() const {
 }
 
 void Matrix::Transpose() {
-
+	Matrix other{ *this };
+	
+	m[0][0] = other(0, 0);	m[1][0] = other(0, 1);	m[2][0] = other(0, 2);	m[3][0] = other(0, 3);
+	m[0][1] = other(1, 0);	m[1][1] = other(1, 1);	m[2][1] = other(1, 2);	m[3][1] = other(1, 3);
+	m[0][2] = other(2, 0);	m[1][2] = other(2, 1);	m[2][2] = other(2, 2);	m[3][2] = other(2, 3);
+	m[0][3] = other(3, 0);	m[1][3] = other(3, 1);	m[2][3] = other(3, 2);	m[3][3] = other(3, 3);
 }
 
 Matrix Matrix::GetTranspose() {
+	Matrix other = *this;
+	other.Transpose();
 
+	return other;
+}
+
+Matrix Matrix::GetTranspose(const Matrix& target){
+	Matrix newMat{ target };
+	newMat.Transpose();
+
+	return newMat;
 }
