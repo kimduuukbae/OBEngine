@@ -4,10 +4,10 @@
 
 class BaseComponent : public BaseObject {
 public:
+	virtual void Construct() override;
 	void SetComponentName(const std::string_view& componentName);
 
-
 private:
-	BaseComponent();
-	~BaseComponent();
+	BaseComponent() = default;
+	virtual ~BaseComponent() = default;
 };
