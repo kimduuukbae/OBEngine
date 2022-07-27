@@ -34,6 +34,8 @@ public:
 		return false;
 	}
 
+	void CreateObject();
+
 private:
 
 	std::thread* __thread;
